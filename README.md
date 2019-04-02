@@ -1,20 +1,30 @@
-# LockPattern
-Android 九宫格图案解锁源码解析，"程序锁"模拟场景使用。
+# LockPatternView
 
-###一、简介
-该实例应用一打开，首先进入"欢迎页" WelcomeActivity，然后判断SharePreference中“是否设置了密码”。
+Android 九宫格图案解锁（手势解锁）自定义视图
 
- - 若未设置密码，进入SetLockActivity进行密码的设置，密码设置成功后进入MainActivity 。
- - 否则，进入UnlockActivity进行解锁 ,如果密码与SharePreference中相符，就直接进入MainActivity 。
+## 简介
+
+示例应用打开后，先进入 `WelcomeActivity` 页面，然后判断 `SharePreference` 中是否存有设置了的手势密码。
+
+ - 若未设置手势密码，则进入 `SetLockActivity` 页面设置手势密码，密码设置成功后进入 `MainActivity` 页面。
+ - 否已设置手势密码，则进入 `UnlockActivity` 页面进行解锁，如果输入的手势密码与 `SharePreference` 中的相同，进入 `MainActivity` 页面。
  
-###二、 效果图
-![设置密码](http://img.blog.csdn.net/20151115175310962 "设置密码")  （左图）设置密码，进行解锁（右图）  ![进行解锁](http://img.blog.csdn.net/20151115175357456 "进行解锁")
+ 
+## 效果图
 
-### 三、代码分析
-####1.代码文件结构和图片资源
-![这里写图片描述](http://img.blog.csdn.net/20151115180017855 "代码文件结构图") ![这里写图片描述](http://img.blog.csdn.net/20151115180033050 "用到的图片资源")
+| 设置手势密码 | 解开手势密码
+| - | -
+| ![](http://img.blog.csdn.net/20151115175310962) | ![](http://img.blog.csdn.net/20151115175357456)
 
-####2. WelcomeActivity.java 
+
+## 示例代码分析
+
+| 代码文件结构 | 相关图片资源
+| - | -
+| ![](http://img.blog.csdn.net/20151115180017855) | ![](http://img.blog.csdn.net/20151115180033050)
+
+**WelcomeActivity.java**
+
 ```java
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -41,7 +51,8 @@ public class WelcomeActivity extends AppCompatActivity {
 }
 ```
 
-####3. MainActivity.java 
+
+**MainActivity.java** 
 
 ```java
 public class MainActivity extends AppCompatActivity {
@@ -54,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    // 双击两次Back键盘退出程序
     @Override
     public void onBackPressed() {
+        // 双击两次 Back 键退出程序
         if (mBackKeyPressedTimes == 0) {
             Toast.makeText(this, "再按一次退出程序 ", Toast.LENGTH_SHORT).show();
             mBackKeyPressedTimes = 1;
@@ -81,27 +92,28 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
-####4. 图案解锁的原理
-“九宫格图案解锁”其实是一个自定义的View，主要重写了OnDraw()和OnTouchEvent()方法。
+**图案解锁的原理**
 
-另外提供了一个“接口”让Activity去实现，在这里SetLockActivity和UnlockActivity都实现了OnLockListener接口。
+「九宫格图案解锁」其实是一个自定义的 `View`：
+* 主要是通过重写 `OnDraw()` 和 `OnTouchEvent()` 方法来实现的。
+* 暴露了一个接口，可由 `Activity` 去实现它。
+
+> 示例中的 `SetLockActivity` 和 `UnlockActivity` 都实现了 `OnLockListener` 接口。
 
 ```java
-    private OnLockListener mListener;
-    
-    public interface OnLockListener {
-        public void getStringPassword(String password);
+private OnLockListener mListener;
 
-        public boolean isPassword();
-    }
+public interface OnLockListener {
 
+    public void getStringPassword(String password);
 
-    public void setLockListener(OnLockListener listener) {
-        this.mListener = listener;
-    }
+    public boolean isPassword();
+}
 
+public void setLockListener(OnLockListener listener) {
+    this.mListener = listener;
+}
 ```
-详细内容请参考源码。
 
-源码下载：https://github.com/zhuanghongji/LockPattern 
+详细内容可参考源代码。
 
