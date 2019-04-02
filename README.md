@@ -2,6 +2,8 @@
 
 Android 九宫格图案解锁（手势解锁）自定义视图
 
+> 仅供参考，该项目不再维护。
+
 ## 简介
 
 示例应用打开后，先进入 `WelcomeActivity` 页面，然后判断 `SharePreference` 中是否存有设置了的手势密码。
@@ -95,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 **图案解锁的原理**
 
 「九宫格图案解锁」其实是一个自定义的 `View`：
-* 主要是通过重写 `OnDraw()` 和 `OnTouchEvent()` 方法来实现的。
+* 主要是通过重写 `View` 的 `OnDraw()` 和 `OnTouchEvent()` 方法来实现的。
 * 暴露了一个接口，可由 `Activity` 去实现它。
 
 > 示例中的 `SetLockActivity` 和 `UnlockActivity` 都实现了 `OnLockListener` 接口。
